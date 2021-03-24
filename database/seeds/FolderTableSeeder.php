@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class FolderTableSeeder extends Seeder
 {
@@ -12,7 +13,6 @@ class FolderTableSeeder extends Seeder
     public function run()
     {
         /* Folders  */
-
         DB::table('folder')->insert([  /* without this folder, nothing works */
             'name' => 'root',
             'folder_id' => NULL,
@@ -24,19 +24,8 @@ class FolderTableSeeder extends Seeder
             'resource' => 1
         ]);
         DB::table('folder')->insert([
-            'name' => 'documents',
-            'folder_id' => $rootId,
-        ]);
-        DB::table('folder')->insert([
             'name' => 'graphics',
             'folder_id' => $rootId,
         ]);
-        DB::table('folder')->insert([
-            'name' => 'other',
-            'folder_id' => $rootId,
-        ]);
-        $id = DB::getPdo()->lastInsertId();
-
-
     }
 }

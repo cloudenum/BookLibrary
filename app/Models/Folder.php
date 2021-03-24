@@ -11,14 +11,4 @@ class Folder extends Model implements HasMedia
     use HasMediaTrait;
 
     protected $table = 'folder';
-    
-    /**
-     * Get the comments for the blog post.
-     */
-    /*
-    public function media()
-    {
-        return $this->hasMany('App\Models\Media');
-    }
-    */
 }
