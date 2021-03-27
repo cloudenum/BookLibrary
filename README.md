@@ -10,6 +10,8 @@ BookLibrary is a very simple library management app built with Laravel 7 and Cor
 See [API documentation](https://documenter.getpostman.com/view/7499297/TzCJfpZu)
 - Multi-role user
 - Dynamic menu list
+- Account Authentication
+- Register Account
 
 ## Installation
 
@@ -50,3 +52,19 @@ Open your browser with address: [localhost:8000](localhost:8000)
 * Password: _password_
 
 This user has roles: _user_ and _admin_
+
+---  
+
+## Database Diagram
+
+![Imgur](https://i.imgur.com/3DwpNsv.png)
+
+---
+
+## Screenshots
+
+![Imgur](https://i.imgur.com/TTmj5hA.png)  
+![Imgur](https://i.imgur.com/DbXLgsR.png)  
+![Imgur](https://i.imgur.com/jgx3k54.png)  
+
+For video [demo](https://drive.google.com/file/d/15oNWG_tK248WflrbQG_gwoa62rMvZCx-/view?usp=sharing).
