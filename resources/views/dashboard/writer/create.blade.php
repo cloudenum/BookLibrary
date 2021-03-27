@@ -11,6 +11,15 @@
                         <i class="fa fa-align-justify"></i> {{ __('Add a Writer') }}
                     </div>
                     <div class="card-body">
+                        @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
                         <form method="POST" action="{{ route('writer.store') }}">
                             @csrf
                             <div class="form-group row">

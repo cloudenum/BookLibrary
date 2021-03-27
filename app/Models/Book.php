@@ -13,6 +13,6 @@ class Book extends Model
      */
     public function writers()
     {
-        return $this->belongsToMany('App\Models\Writer');
+        return $this->belongsToMany('App\Models\Writer', 'book_writer', 'book_id', 'writer_id');
     }
 }

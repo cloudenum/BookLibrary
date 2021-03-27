@@ -11,7 +11,16 @@
                         <i class="fa fa-align-justify"></i> {{ __('Edit Writer') }}
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="/writers/{{ $writer->id }}">
+                        @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
+                        <form method="POST" action="/writer/{{ $writer->id }}">
                             @csrf
                             @method('PUT')
                             <div class="form-group row">

@@ -16,14 +16,14 @@ class CreateBooksTable extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('description');
-            $table->string('image_path');
+            $table->longText('description');
+            $table->text('image_url');
             $table->integer('total_pages');
             $table->date('published_date');
             $table->timestamps();
         });
 
-        Schema::create('books_writers', function (Blueprint $table) {
+        Schema::create('book_writer', function (Blueprint $table) {
             $table->unsignedBigInteger('book_id');
             $table->unsignedBigInteger('writer_id');
             $table->foreign('book_id')
@@ -36,7 +36,7 @@ class CreateBooksTable extends Migration
                 ->on('writers')
                 ->onDelete('cascade');
 
-            $table->primary(['book_id', 'writer_id'], 'books_writers_book_id_writer_id_primary');
+            $table->primary(['book_id', 'writer_id'], 'book_writer_book_id_writer_id_primary');
         });
     }
 

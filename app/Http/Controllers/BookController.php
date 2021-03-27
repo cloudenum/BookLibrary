@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Writer;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
@@ -50,34 +51,35 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title'                 => 'required|string',
-            'description'           => 'required|string',
-            'image_file'            => 'required|file',
+            'title'                 => 'required',
+            'description'           => 'required|alpha_num',
+            'image_file'            => 'required|mimetypes:image/jpeg,image/png',
             'published_date'        => 'required|date',
             'total_pages'           => 'required|numeric',
             'writers.*'             => 'required|exists:App\Models\Writer,id'
         ]);
 
         if ($request->hasFile('image_file')) {
-            $path = $request->file('image_file')->storePublicly('books_img');
-
+            $path = $request->file('image_file')->store('books_img', 'public');
+            Log::debug('Path: ' . $path);
             $book = new Book();
             $book->title            = $request->input('title');
             $book->description      = $request->input('description');
             $book->total_pages      = $request->input('total_pages');
             $book->published_date   = $request->input('published_date');
-            $book->image_url        = Storage::url($path);
-
-            $writers = $request->input('writers');
-            $book->writers()->attach($writers);
+            $book->image_url        = url(Storage::url($path));
             $book->save();
 
+            $writers = $request->input('writers');
+            Log::debug($writers);
+            $book->writers()->attach($writers);
+
             $request->session()->flash('message', 'Successfully created a book');
+            return redirect()->route('book.show', [$book->id]);
         } else {
             $request->session()->flash('message', 'Not valid file');
+            return redirect()->route('book.create');
         }
-
-        return redirect()->route('book.index');
     }
 
     /**
@@ -101,7 +103,11 @@ class BookController extends Controller
     public function edit($id)
     {
         $book = Book::with('writers')->find($id);
-        return view('dashboard.book.edit', ['book' => $book]);
+        $writers = Writer::all();
+        return view('dashboard.book.edit', [
+            'book' => $book,
+            'writers' => $writers
+        ]);
     }
 
     /**
@@ -113,14 +119,16 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
+        Log::debug('start validate?');
         $request->validate([
             'title'                 => 'required|string',
             'description'           => 'required|string',
-            'image_file'            => 'file',
+            'image_file'            => 'mimetypes:image/jpeg,image/png',
             'published_date'        => 'required|date',
             'total_pages'           => 'required|numeric',
             'writers.*'             => 'required|exists:App\Models\Writer,id'
         ]);
+        Log::debug('valid?');
 
         $book = Book::find($id);
         if (!$book) {
@@ -133,21 +141,19 @@ class BookController extends Controller
         $book->total_pages      = $request->input('total_pages');
         $book->published_date   = $request->input('published_date');
 
+        if ($request->hasFile('image_file')) {
+            $path = $request->file('image_file')->store('books_img', 'public');
+            $book->image_url        = url(Storage::url($path));
+            Log::debug('upload?');
+        }
+
+        $book->save();
+
         $writers = $request->input('writers');
         $book->writers()->detach();
         $book->writers()->attach($writers);
 
-        if ($request->exists('image_file')) {
-            if (!$request->hasFile('image_file')) {
-                $request->session()->flash('message', 'Not valid file');
-                return redirect()->route('book.index');
-            }
-
-            $path = $request->file('image_file')->storePublicly('books_img');
-            $book->image_url        = Storage::url($path);
-        }
-
-        $book->save();
+        Log::debug('saved?');
         $request->session()->flash('message', 'Successfully updated a book');
         return redirect()->route('book.index');
     }

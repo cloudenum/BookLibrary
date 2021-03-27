@@ -9,14 +9,6 @@ class Users extends Model
 {
     use SoftDeletes;
 
-    /**
-     * Get the notes for the users.
-     */
-    public function notes()
-    {
-        return $this->hasMany('App\Models\Notes');
-    }
-
     protected $dates = [
         'deleted_at'
     ];

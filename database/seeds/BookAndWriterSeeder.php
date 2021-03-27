@@ -1,9 +1,10 @@
 <?php
 
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class WriterSeeder extends Seeder
+class BookAndWriterSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -21,10 +22,20 @@ class WriterSeeder extends Seeder
         shuffle($arrOfNumber);
 
         for ($i = 0; $i < 50; $i++) {
-            DB::table('books_writers')->insert([
+            DB::table('book_writer')->insert([
                 'book_id' => $i + 1,
                 'writer_id' => $i < 23 ? $arrOfNumber[$i] : random_int(1, 23)
             ]);
+            // repeat
+            if (!random_int(0, 3)) {
+                try {
+                    DB::table('book_writer')->insert([
+                        'book_id' => $i + 1,
+                        'writer_id' => random_int(1, 23)
+                    ]);
+                } catch (QueryException $e) {
+                }
+            }
         }
     }
 }

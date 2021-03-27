@@ -28,13 +28,13 @@
                             <tbody>
                                 @foreach($writers as $writer)
                                 <tr>
-                                    <td>{{ $writer->first_name }}/td>
+                                    <td>{{ $writer->first_name }}</td>
                                     <td><strong>{{ $writer->last_name }}</strong></td>
                                     <td>
-                                        <a href="{{ url('/writers/' . $writer->id) }}" class="btn btn-block btn-primary">View</a>
+                                        <a href="{{ url('/writer/' . $writer->id) }}" class="btn btn-block btn-primary">View</a>
                                     </td>
                                     <td>
-                                        <a href="{{ url('/writers/' . $writer->id . '/edit') }}" class="btn btn-block btn-primary">Edit</a>
+                                        <a href="{{ url('/writer/' . $writer->id . '/edit') }}" class="btn btn-block btn-primary">Edit</a>
                                     </td>
                                     <td>
                                         <form action="{{ route('writer.destroy', $writer->id ) }}" method="POST">
