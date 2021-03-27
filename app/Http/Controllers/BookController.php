@@ -52,7 +52,7 @@ class BookController extends Controller
     {
         $request->validate([
             'title'                 => 'required',
-            'description'           => 'required|alpha_num',
+            'description'           => 'required|string',
             'image_file'            => 'required|mimetypes:image/jpeg,image/png',
             'published_date'        => 'required|date',
             'total_pages'           => 'required|numeric',
